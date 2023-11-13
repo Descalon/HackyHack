@@ -1,0 +1,113 @@
+syntax = "proto3";
+option csharp_namespace = "Hackvip.Domain";
+package ServiceBus;
+
+import "google/protobuf/timestamp.proto";
+
+service Ingress {
+  rpc PublishData (PublishDataMessage) returns (PublishReply);
+}
+
+enum BerichtType {
+  VRAAG = 0;
+  RAPPEL = 1;
+  BESCHIKKING = 2;
+}
+
+message PublishDataMessage {
+    string AanvragerKey = 1;
+    BerichtType BerichtType = 2;
+    google.protobuf.Timestamp DatumDagtekening = 3;
+    bool KgbVariant = 4;
+    google.protobuf.Timestamp ReactieDatum = 5;
+    int32 ToeslagJaar = 6;
+}
+
+message PublishReply {}
+
+service Repository {
+  rpc GetBeschikkingData (GetBeschikkingDataRequest) returns (GetBeschikkingDataResponse);
+  rpc GetRappelData (GetRappelDataRequest) returns (GetRappelDataResponse);
+  rpc GetVraagData (GetVraagDataRequest) returns (GetVraagDataResponse);
+  rpc PostBeschikkingData (PostBeschikkingDataRequest) returns (PostDataResponse);
+  rpc PostRappelData (PostRappelDataRequest) returns (PostDataResponse);
+  rpc PostVraagData (PostVraagDataRequest) returns (PostDataResponse);
+}
+
+message GetBeschikkingDataRequest {
+  string AanvragerKey = 1;
+}
+message GetBeschikkingDataResponse {
+  BeschikkingBrief data = 2;
+}
+message GetRappelDataRequest {
+  string AanvragerKey = 1;
+  
+}
+message GetRappelDataResponse {
+  Rappelbrief data = 2;
+  
+}
+message GetVraagDataRequest {
+  string AanvragerKey = 1;
+
+}
+message GetVraagDataResponse {
+  VraagBrief data = 2;
+}
+
+message PostBeschikkingDataRequest {
+  BeschikkingBrief data = 2;
+}
+message PostDataResponse {
+  string AanvragerKey = 1;
+}
+message PostRappelDataRequest {
+  Rappelbrief data = 2;
+}
+message PostRappelDataResponse {
+  string AanvragerKey = 1;
+}
+message PostVraagDataRequest {
+  VraagBrief data = 2;
+}
+message PostVraagDataResponse {
+  string AanvragerKey = 1;
+}
+
+message Adres {
+  string straatnaam = 1;
+  string huisnummer = 2;
+  string postcode = 3;
+  string woonplaats = 4;
+}
+message Burger {
+  string Bsn = 1;
+  string voorletters = 2;
+  string achternaam = 3;
+  Adres adres = 4;
+}
+
+message TemplateData {
+  google.protobuf.Timestamp datumDagtekening = 3;
+  string kenmerk = 4;
+}
+
+message BeschikkingBrief {
+  string AanvragerKey = 1;
+  google.protobuf.Timestamp Vraagbrief = 2;
+  google.protobuf.Timestamp rappelbrief = 3;
+  TemplateData td = 4;
+}
+message Rappelbrief {
+  string AanvragerKey = 1;
+  google.protobuf.Timestamp Vraagbrief = 2;
+  TemplateData td = 4;
+}
+message VraagBrief {
+  string AanvragerKey = 1;
+  Burger burger = 2;
+  bool KgbVariant = 3;
+  int32 ToeslagJaar = 4;
+  TemplateData td = 5;
+}
