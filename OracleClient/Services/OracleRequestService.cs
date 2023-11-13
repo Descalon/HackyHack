@@ -10,7 +10,7 @@ public class OracleRequestService(HttpClient client)
 
     public async Task<BurgerModel> GetBurger(Guid key)
     {
-        var response = await _client.GetAsync($"/{key}");
+        var response = await _client.GetAsync($"/oracle/personal?key={key}");
         var content = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<BurgerModel>(content) ?? throw new Exception("Serialization error");
     }

@@ -13,15 +13,16 @@ public class IngressService(ILogger<IngressService> logger, OracleRequestService
     public override async Task<PublishReply> PublishData(PublishDataMessage request, ServerCallContext context)
     {
         var burger = await _requestService.GetBurger(Guid.Parse(request.AanvragerKey));
-        var _ = request.BerichtType switch
-        {
-            BerichtType.Vraag => await _repoClient.PostVraagDataAsync(new() { Data = VraagBriefFromRequest(request, burger) }),
-            BerichtType.Rappel => await _repoClient.PostRappelDataAsync(new() { Data = RappelBriefFromRequest(request) }),
-            BerichtType.Beschikking => await _repoClient.PostBeschikkingDataAsync(new() { Data = BeschikkingBriefFromRequest(request) }),
-            _ => throw new NotImplementedException(),
-        };
-        
         return new PublishReply();
+        // var _ = request.BerichtType switch
+        // {
+        //     BerichtType.Vraag => await _repoClient.PostVraagDataAsync(new() { Data = VraagBriefFromRequest(request, burger) }),
+        //     BerichtType.Rappel => await _repoClient.PostRappelDataAsync(new() { Data = RappelBriefFromRequest(request) }),
+        //     BerichtType.Beschikking => await _repoClient.PostBeschikkingDataAsync(new() { Data = BeschikkingBriefFromRequest(request) }),
+        //     _ => throw new NotImplementedException(),
+        // };
+        
+        // return new PublishReply();
     }
 
     private VraagBrief VraagBriefFromRequest(PublishDataMessage request, BurgerModel b) => new()

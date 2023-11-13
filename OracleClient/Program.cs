@@ -7,7 +7,7 @@ var services = builder.Services;
 // Add services to the container.
 services.AddGrpc();
 services.AddHttpClient<OracleRequestService>(client => {
-    var apiBaseAddress = builder.Configuration["OracleApiUrl"] ?? throw new Exception("Oracle API Key not found");
+    var apiBaseAddress = builder.Configuration["OracleApiUri"] ?? throw new Exception("Oracle API Key not found");
     client.BaseAddress = new Uri(apiBaseAddress);
 });
 
